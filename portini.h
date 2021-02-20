@@ -59,7 +59,7 @@ public:
 
 	template <typename... Args>
 	std::pair<iterator, bool> emplace(Args&&... args) {
-		auto iter = find_(std::forward<Args>(args)...);
+		auto iter = find_(args...);
 		if (iter != end()) {
 			return std::make_pair(iter, false);
 		}
