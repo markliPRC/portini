@@ -143,6 +143,9 @@ private:
 	std::basic_string<Ch> value_;
 };
 
+using Key = GenericKey<char>;
+using KeyW = GenericKey<wchar_t>;
+
 template <typename Ch, bool Stable>
 class GenericSection {
 	using Container = internal::Container<std::basic_string<Ch>, GenericKey<Ch>, Stable>;
@@ -212,6 +215,11 @@ public:
 private:
 	Container keys_;
 };
+
+using Section = GenericSection<char, false>;
+using SectionW = GenericSection<wchar_t, false>;
+using StableSection = GenericSection<char, true>;
+using StableSectionW = GenericSection<wchar_t, true>;
 
 template <typename Ch, bool Stable>
 class GenericDocument {
@@ -371,6 +379,11 @@ private:
 
 	Container sections_;
 };
+
+using Document = GenericDocument<char, false>;
+using DocumentW = GenericDocument<wchar_t, false>;
+using StableDocument = GenericDocument<char, true>;
+using StableDocumentW = GenericDocument<wchar_t, true>;
 
 } // namespace portini
 
