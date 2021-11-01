@@ -79,7 +79,8 @@ public:
 	}
 
 private:
-	iterator find_(const KeyTy& key, ...) {
+	template <typename... Args>
+	iterator find_(const KeyTy& key, Args&&...) {
 		return find(key);
 	}
 
