@@ -346,7 +346,7 @@ private:
 	bool Parse(const std::basic_string<Ch>& line, GenericSection<Ch, Stable>** ctx) {
 		Ch ch = *line.begin();
 
-		if (ch == ';') {
+		if (ch == ';' || ch == '#') {
 			return true;
 		} else if (ch == '[') {
 			if (*line.rbegin() != ']') {
