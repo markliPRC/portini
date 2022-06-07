@@ -87,13 +87,13 @@ private:
 	Base base_;
 };
 
-template <typename Ch, typename Ty, typename = typename std::enable_if<std::is_same<Ch, char>::value>::type>
-inline std::string ToString(Ty src) {
+template <typename Ch, typename Ty>
+inline std::basic_string<std::enable_if_t<std::is_same_v<Ch, char>, char>> ToString(Ty src) {
 	return std::to_string(src);
 }
 
-template <typename Ch, typename Ty, typename = typename std::enable_if<std::is_same<Ch, wchar_t>::value>::type>
-inline std::wstring ToString(Ty src) {
+template <typename Ch, typename Ty>
+inline std::basic_string<std::enable_if_t<std::is_same_v<Ch, wchar_t>, wchar_t>> ToString(Ty src) {
 	return std::to_wstring(src);
 }
 
@@ -106,14 +106,19 @@ public:
 		return value_;
 	}
 
-	template <typename Ty, typename = typename std::enable_if<std::is_arithmetic<Ty>::value>::type>
-	Ty GetValue(Ty* = nullptr) const {
+	template <typename Ty>
+	std::enable_if_t<std::is_arithmetic_v<Ty>, Ty> GetValue(Ty* = nullptr) const {
 		Ty value;
 
 		std::basic_istringstream<Ch> iss(value_);
 		iss >> value;
 
 		return value;
+	}
+
+	template <typename Ty>
+	std::enable_if_t<std::is_enum_v<Ty>, Ty> GetValue(Ty* = nullptr) const {
+		return static_cast<Ty>(GetValue(static_cast<std::underlying_type_t<Ty>*>(nullptr)));
 	}
 
 	void SetValue(const std::basic_string<Ch>& value) {
@@ -124,9 +129,14 @@ public:
 		value_ = std::move(value);
 	}
 
-	template <typename Ty, typename = typename std::enable_if<std::is_arithmetic<Ty>::value>::type>
-	void SetValue(Ty value) {
+	template <typename Ty>
+	std::enable_if_t<std::is_arithmetic_v<Ty>> SetValue(Ty value) {
 		value_ = internal::ToString<Ch>(value);
+	}
+
+	template <typename Ty>
+	std::enable_if_t<std::is_enum_v<Ty>> SetValue(Ty value) {
+		SetValue(static_cast<std::underlying_type_t<Ty>>(value));
 	}
 
 	template <typename Ty>
