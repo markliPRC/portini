@@ -22,12 +22,12 @@ class Container : public std::unordered_map<KeyTy, MappedTy> {
 template <typename KeyTy, typename MappedTy>
 class Container<KeyTy, MappedTy, true> {
 	using ValueTy = std::pair<KeyTy, MappedTy>;
-	using Base = std::vector<ValueTy>;
+	using BaseTy = std::vector<ValueTy>;
 
 public:
-	using const_iterator = typename Base::const_iterator;
-	using iterator = typename Base::iterator;
-	using size_type = typename Base::size_type;
+	using const_iterator = typename BaseTy::const_iterator;
+	using iterator = typename BaseTy::iterator;
+	using size_type = typename BaseTy::size_type;
 
 	const_iterator begin() const {
 		return base_.begin();
@@ -59,7 +59,7 @@ public:
 
 	template <typename... Args>
 	std::pair<iterator, bool> emplace(Args&&... args) {
-		auto iter = find_(args...);
+		auto iter = find_args(args...);
 		if (iter != end()) {
 			return std::make_pair(iter, false);
 		}
@@ -80,11 +80,11 @@ public:
 
 private:
 	template <typename... Args>
-	iterator find_(const KeyTy& key, Args&&...) {
+	iterator find_args(const KeyTy& key, Args&&...) {
 		return find(key);
 	}
 
-	Base base_;
+	BaseTy base_;
 };
 
 template <typename Ch, typename Ty>
