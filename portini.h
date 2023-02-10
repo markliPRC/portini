@@ -258,7 +258,7 @@ public:
 	}
 
 	bool SerializeToFile(const Ch* filename) const {
-		std::basic_ofstream<Ch> ofs(filename);
+		std::basic_ofstream<Ch> ofs(filename, std::ios_base::binary);
 		if (!ofs.is_open()) {
 			return false;
 		}
