@@ -108,7 +108,7 @@ public:
 
 	template <typename Ty>
 	std::enable_if_t<std::is_arithmetic_v<Ty>, Ty> GetValue(Ty* = nullptr) const {
-		Ty value;
+		Ty value{};
 
 		std::basic_istringstream<Ch> iss(value_);
 		iss >> value;
