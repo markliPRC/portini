@@ -335,12 +335,16 @@ public:
 
 private:
 	bool ParseFromStream(std::basic_istream<Ch>& is) {
+		std::basic_string<Ch> line;
 		GenericSection<Ch, Stable>* ctx = nullptr;
 
-		do {
-			std::basic_string<Ch> line;
+		for (;;) {
+			if (std::getline(is, line).eof()) {
+				break;
+			} else if (is.fail()) {
+				return false;
+			}
 
-			std::getline(is, line);
 			if (line.empty()) {
 				continue;
 			}
@@ -348,7 +352,7 @@ private:
 			if (!Parse(line, &ctx)) {
 				return false;
 			}
-		} while (!is.eof());
+		}
 
 		return true;
 	}
@@ -385,6 +389,8 @@ private:
 			for (auto& key : section.second) {
 				os << key.first << '=' << key.second.GetValue() << std::endl;
 			}
+
+			os << std::endl;
 		}
 	}
 
