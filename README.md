@@ -93,7 +93,8 @@ long l = key;
 unsigned long ul = key;
 float f = key;
 double d = key;
-auto& str = key;
+Enum e = key;
+const std::string& str = key;
 
 // Set Value
 key = short(0);
@@ -104,6 +105,7 @@ key = 0L;
 key = 0UL;
 key = 0.0F;
 key = 0.0;
+key = Enum::kEnum;
 key = "str";
 ```
 
